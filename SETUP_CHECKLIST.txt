@@ -1,0 +1,225 @@
+================================================================================
+CAMPUS PLACEMENT MANAGEMENT SYSTEM - SETUP CHECKLIST
+================================================================================
+
+Follow this checklist to set up the system on your local machine.
+
+================================================================================
+PREREQUISITES
+================================================================================
+
+[ ] Java JDK 8 or higher installed
+    Test: Open command prompt and run: java -version
+    Download: https://www.oracle.com/java/technologies/javase-downloads.html
+
+[ ] Oracle Database 11g or higher installed
+    Download: https://www.oracle.com/database/technologies/xe-downloads.html
+    
+[ ] Oracle Database service running
+    Windows: Check Services -> OracleServiceXE should be Running
+    Or run: lsnrctl status
+
+[ ] Apache Ant installed (optional, for building)
+    Test: ant -version
+    Download: https://ant.apache.org/bindownload.cgi
+
+================================================================================
+STEP 1: GET JDBC DRIVER
+================================================================================
+
+[ ] Downloaded ojdbc6.jar
+    Download from: https://www.oracle.com/database/technologies/jdbcdriver-ucp-downloads.html
+    Or copy from: C:\app\oracle\product\11.2.0\dbhome_1\jdbc\lib\ojdbc6.jar
+
+[ ] Placed ojdbc6.jar in lib folder
+    Location: D:\Java Major Project\trandpl\lib\ojdbc6.jar
+    File size: Should be about 2-3 MB
+
+================================================================================
+STEP 2: SETUP DATABASE
+================================================================================
+
+[ ] Connected to Oracle as SYSDBA
+    Command: sqlplus sys as sysdba
+    Password: Your Oracle system password
+
+[ ] Created trandpl user
+    Run: CREATE USER trandpl IDENTIFIED BY trandpl;
+    
+[ ] Granted privileges
+    Run: GRANT CONNECT, RESOURCE, CREATE VIEW TO trandpl;
+    Run: GRANT UNLIMITED TABLESPACE TO trandpl;
+
+[ ] Connected as trandpl user
+    Run: CONNECT trandpl/trandpl
+
+[ ] Executed schema.sql script
+    Run: @D:\Java Major Project\trandpl\schema.sql
+    Or use SQL Developer to execute the script
+
+[ ] Verified tables created
+    Run: SELECT table_name FROM user_tables;
+    Should show: USERS, HR, PARTICIPANTS, JOBS, QUESTIONS, RESULTS
+
+[ ] Verified sample data loaded
+    Run: SELECT COUNT(*) FROM users;
+    Should show: 6 or more records
+
+================================================================================
+STEP 3: CONFIGURE APPLICATION
+================================================================================
+
+[ ] Opened db.properties file
+    Location: D:\Java Major Project\trandpl\db.properties
+
+[ ] Updated database URL (if needed)
+    Default: jdbc:oracle:thin:@//localhost:1521/xe
+    Change if your Oracle is on different host/port
+
+[ ] Updated username (if different)
+    Default: trandpl
+
+[ ] Updated password (if different)
+    Default: trandpl
+
+[ ] Saved db.properties file
+
+================================================================================
+STEP 4: BUILD THE PROJECT
+================================================================================
+
+[ ] Opened command prompt in project directory
+    Location: D:\Java Major Project\trandpl
+
+[ ] Ran build script
+    Option A: Double-click build.bat
+    Option B: Run in command prompt: ant clean jar
+
+[ ] Build completed successfully
+    Check for: "BUILD SUCCESSFUL" message
+    JAR file created: dist\trandpl.jar
+
+[ ] No compilation errors
+
+================================================================================
+STEP 5: RUN THE APPLICATION
+================================================================================
+
+[ ] Oracle Database is running
+    Verify service is started
+
+[ ] Ran the application
+    Option A: Double-click run.bat
+    Option B: Run in command prompt: java -jar dist\trandpl.jar
+
+[ ] Application window appeared
+    Should see login screen
+
+[ ] Tested login with admin account
+    Email: admin@trandpl.com
+    Password: admin123
+    User Type: Admin
+
+[ ] Login successful
+    Should see welcome message and admin options
+
+================================================================================
+VERIFICATION TESTS
+================================================================================
+
+Test Admin Login:
+[ ] Logged in as admin@trandpl.com / admin123
+[ ] Can see admin menu options
+[ ] Can view users
+
+Test HR Login:
+[ ] Logged in as hr@infosys.com / hr123
+[ ] Can see HR menu options
+[ ] Can create/view jobs
+
+Test Student Login:
+[ ] Logged in as student1@college.edu / student123
+[ ] Can see student menu options
+[ ] Can browse jobs
+
+================================================================================
+TROUBLESHOOTING (If any step fails)
+================================================================================
+
+Problem: "JDBC Driver not found"
+Solution: 
+- Verify ojdbc6.jar is in lib folder
+- Check file size (should be 2-3 MB)
+- Rebuild the project
+
+Problem: "Connection failed"
+Solution:
+- Verify Oracle Database is running (check Windows Services)
+- Test connection: sqlplus trandpl/trandpl
+- Check db.properties settings
+- Verify username and password
+
+Problem: "Table or view does not exist"
+Solution:
+- Connect as trandpl user: sqlplus trandpl/trandpl
+- Run schema.sql again
+- Check: SELECT * FROM user_tables;
+
+Problem: "Build failed"
+Solution:
+- Verify Java is installed: java -version
+- Check JAVA_HOME environment variable
+- Try: ant clean, then ant jar
+
+Problem: "OutOfMemoryError"
+Solution:
+- Increase Java heap size
+- Run with: java -Xmx512m -jar dist\trandpl.jar
+
+================================================================================
+ADDITIONAL RESOURCES
+================================================================================
+
+[ ] Read README.md for detailed documentation
+[ ] Read QUICKSTART.md for quick reference
+[ ] Check CHANGES.md for list of modifications
+[ ] See lib\README.txt for JDBC driver help
+
+================================================================================
+PRODUCTION DEPLOYMENT (Optional)
+================================================================================
+
+Before deploying to production:
+[ ] Change all default passwords
+[ ] Implement password encryption
+[ ] Add input validation
+[ ] Enable database connection pooling
+[ ] Add logging and monitoring
+[ ] Set up regular database backups
+[ ] Review security considerations in README.md
+
+================================================================================
+SUCCESS!
+================================================================================
+
+If all items are checked, your Campus Placement Management System is ready!
+
+You can now:
+- Create new HR accounts (as Admin)
+- Post jobs and create quizzes (as HR)
+- Register students and apply for jobs (as Student)
+- Manage the entire placement process
+
+Enjoy using the system!
+
+================================================================================
+Need Help?
+================================================================================
+
+1. Check README.md troubleshooting section
+2. Review error messages in console
+3. Verify all checklist items completed
+4. Check Oracle database logs
+5. Review QUICKSTART.md for common solutions
+
+================================================================================
